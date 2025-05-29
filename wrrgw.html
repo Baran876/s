@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hacı Halil Paşa Ortaokulu</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        /* Temel stil */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        /* İstersen buraya ek stiller ekleyebilirsin */
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="https://via.placeholder.com/40" alt="Okul Logosu" />
+                <span>Hacı Halil Paşa Ortaokulu</span>
+            </a>
+            <div id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item" id="navLogin">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Giriş Yap</a>
+                    </li>
+                    <li class="nav-item dropdown" id="navUser" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <span id="usernameDisplay"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" id="logoutBtn">Çıkış Yap</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Guest View -->
+        <div id="guestView">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <h1 class="mb-4">Hacı Halil Paşa Ortaokulu Portalına Hoş Geldiniz</h1>
+                    <p class="lead">Öğrenci ve öğretmenler için iletişim platformu</p>
+                    <button class="btn btn-primary btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#loginModal">Giriş Yap</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- User View -->
+        <div id="userView" style="display: none;">
+            <div class="row">
+                <!-- Left Sidebar -->
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Kullanıcı Bilgileri</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="https://via.placeholder.com/60" class="rounded-circle me-3" id="userAvatar" />
+                                <div>
+                                    <h5 id="userFullname"></h5>
+                                    <span class="badge bg-secondary" id="userRoleBadge"></span>
+                                </div>
+                            </div>
+                            <div class="mb-2"><strong>Sınıf:</strong> <span id="userClass"></span></div>
+                            <div class="mb-2"><strong>E-posta:</strong> <span id="userEmail"></span></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Çevrimiçi Kullanıcılar</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group" id="onlineUsersList">
+                                <!-- Online users will appear here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Chat Area -->
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0" id="chatTitle">Genel Sohbet</h5>
+                            <div>
+                                <select class="form-select form-select-sm" id="chatSelector" style="width: auto; display: inline-block;">
+                                    <option value="general">Genel Sohbet</option>
+                                    <option value="teachers">Öğretmenler</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="chat-container" id="chatContainer" style="height: 500px; overflow-y: auto; background-color: white; border-radius: 10px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                <!-- Messages will appear here -->
+                            </div>
+                            <div class="p-3 border-top">
+                                <div class="input-group">
+                                    <textarea class="form-control" id="messageInput" placeholder="Mesajınızı yazın..." rows="2" style="resize:none;"></textarea>
+                                    <button class="btn btn-primary" id="sendMessageBtn">Gönder</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Portal Girişi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs mb-4" id="loginTabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="student-tab" data-bs-toggle="tab" href="#studentLogin">Öğrenci Girişi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="teacher-tab" data-bs-toggle="tab" href="#teacherLogin">Öğretmen Girişi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="register-tab" data-bs-toggle="tab" href="#registerTab">Kayıt Ol</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <!-- Student Login -->
+                        <div class="tab-pane fade show active" id="studentLogin">
+                            <form id="studentLoginForm">
+                                <div class="mb-3">
+                                    <label for="studentEmail" class="form-label">Öğrenci E-posta</label>
+                                    <input type="email" class="form-control" id="studentEmail" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="studentPassword" class="form-label">Şifre</label>
+                                    <input type="password" class="form-control" id="studentPassword" required />
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
+                            </form>
+                        </div>
+
+                        <!-- Teacher Login -->
+                        <div class="tab-pane fade" id="teacherLogin">
+                            <form id="teacherLoginForm">
+                                <div class="mb-3">
+                                    <label for="teacherEmail" class="form-label">Öğretmen E-posta</label>
+                                    <input type="email" class="form-control" id="teacherEmail" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="teacherPassword" class="form-label">Şifre</label>
+                                    <input type="password" class="form-control" id="teacherPassword" required />
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
+                            </form>
+                        </div>
+
+                        <!-- Registration -->
+                        <div class="tab-pane fade" id="registerTab">
+                            <form id="registerForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Hesap Türü</label>
+                                    <select class="form-select" id="registerType">
+                                        <option value="student">Öğrenci</option>
+                                        <option value="teacher">Öğretmen</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3" id="classField">
+                                    <label for="registerClass" class="form-label">Sınıf</label>
+                                    <select class="form-select" id="registerClass">
+                                        <option value="5">5. Sınıf</option>
+                                        <option value="6">6. Sınıf</option>
+                                        <option value="7">7. Sınıf</option>
+                                        <option value="8">8. Sınıf</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="registerEmail" class="form-label">E-posta</label>
+                                    <input type="email" class="form-control" id="registerEmail" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="registerPassword" class="form-label">Şifre (en az 6 karakter)</label>
+                                    <input type="password" class="form-control" id="registerPassword" minlength="6" required />
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Kayıt Ol</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK'ları -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <!-- Firebase Başlatma ve Temel İşlevler -->
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDwcZvzQim9qX9QVT896okIV2-HZ35LMRE",
+        authDomain: "baran-fde96.firebaseapp.com",
+        projectId: "baran-fde96",
+        storageBucket: "baran-fde96.appspot.com",
+        messagingSenderId: "180361065424",
+        appId: "1:180361065424:web:a9f3351efbe85621953fd5",
+        measurementId: "G-H5CMJRSY57"
+      };
+      firebase.initializeApp(firebaseConfig);
+
+      // Buraya auth ve database işlemleri için JS kodları ekleyebilirsin
+    </script>
+
+    <!-- Bootstrap Bundle (JS + Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
